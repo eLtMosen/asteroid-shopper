@@ -1,17 +1,14 @@
-# AsteroidOS Hello World App
-A simple hello world app for [AsteroidOS](http://asteroidos.org/)
+# Shopping List App for AsteroidOS
+This QML application provides a simple yet functional shopping list for the AsteroidOS smartwatch platform. It reads items from a text file and allows users to manage their shopping needs directly from their wrist.
 
-See https://wiki.asteroidos.org/index.php/Creating_an_Asteroid_app for instruction on how to build and run it.
-
-If you have used the Hello World App as a template and wish to use it as the basis for your own AsteroidOS application here are the steps:
-
- 1. Decide on a name for your project, (we use `myproject-name` as an example here)
- 2. Change the project name in `CMakeLists.txt` from `asteroid-helloworld` to your name (e.g. `myproject-name`)
- 3. Rename the `i18n/asteroid-helloworld.desktop.h` file to user your project name (e.g. `i18n/myproject-name.desktop.h`)
- 4. Rename the `asteroid-helloworld.desktop.template` file to use your project name (e.g. `myproject-name.desktop.template`)
- 5. Edit the newly renamed `destkop.template` file from the previous step and change the `Exec=` line to your project name
- 6. Optionally, but highly recommended, change the `Icon`, `X-Asteroid-Center-Color` and `X-Asteroid-Outer-Color` values in that same file
- 7. Alter the functionality to suit
+## Features:
+- Loads shopping items from file:///home/ceres/shopper.txt
+- Displays items in a vertically scrolling list with checkboxes
+- Sorts unchecked items to the top and checked items to the bottom, both alphabetically
+- Fades item background to grey when checked, transparent when unchecked
+- Persists checked/unchecked state to the text file using +/- prefixes
+- Includes an "Uncheck All" button at the list bottom
+- Maintains scroll position when checking items
+- Left-aligned item names for clear readability
 
 
-Note that for steps 3 and 4, use `git mv` to rename the files so that your repository will reflect these changes.
