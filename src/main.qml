@@ -110,10 +110,9 @@ Application {
         sortList()
     }
 
-    // Timer to delay sorting until animation completes
     Timer {
         id: sortDelayTimer
-        interval: 500  // Match the longest animation duration (fade)
+        interval: 500  // Match the fade animation duration
         repeat: false
         onTriggered: sortList()
     }
@@ -128,6 +127,14 @@ Application {
         delegate: Item {
             width: listView.width
             height: 72
+            opacity: checked ? 0.6 : 1.0  // Fade to 0.6 when checked, 1.0 when unchecked
+
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: 500  // 500ms fade
+                    easing.type: Easing.InOutQuad
+                }
+            }
 
             Rectangle {
                 id: backgroundRect
@@ -137,7 +144,7 @@ Application {
 
                 Behavior on opacity {
                     NumberAnimation {
-                        duration: 500  // 500ms fade for state change
+                        duration: 500
                         easing.type: Easing.InOutQuad
                     }
                 }
@@ -177,7 +184,7 @@ Application {
                 onClicked: {
                     clickFeedbackAnimation.start()
                     shoppingModel.setProperty(index, "checked", !checked)
-                    sortDelayTimer.start()  // Delay sorting until animation completes
+                    sortDelayTimer.start()
                 }
             }
 
