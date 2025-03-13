@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Categories=Applications;
+Exec=asteroid-shopper
+Icon=ios-list-box-outline
+X-Asteroid-Center-Color=#A4778B
+X-Asteroid-Outer-Color=#435058
