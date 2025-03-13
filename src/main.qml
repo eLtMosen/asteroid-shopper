@@ -26,8 +26,8 @@ Application {
     id: root
     anchors.fill: parent
 
-    centerColor: "#A4778B"
-    outerColor: "#435058"
+    centerColor: "#119DA4"
+    outerColor: "#090B0C"
 
     ListModel {
         id: shoppingModel
@@ -76,22 +76,18 @@ Application {
         var currentPosition = listView.contentY
         var atTop = listView.atYBeginning
 
-        // Collect all items into an array of new objects
         var items = []
         for (var i = 0; i < shoppingModel.count; i++) {
             var item = shoppingModel.get(i)
             items.push({name: item.name, checked: item.checked})
         }
 
-        // Split into checked and unchecked
         var unchecked = items.filter(item => !item.checked)
         var checked = items.filter(item => item.checked)
 
-        // Sort alphabetically
         unchecked.sort((a, b) => a.name.localeCompare(b.name))
         checked.sort((a, b) => a.name.localeCompare(b.name))
 
-        // Update model in place with fresh objects
         var newIndex = 0
         unchecked.forEach(item => {
             shoppingModel.set(newIndex++, {name: item.name, checked: item.checked})
@@ -102,7 +98,6 @@ Application {
 
         saveShoppingList()
 
-        // Restore scroll position
         if (!atTop) {
             listView.contentY = currentPosition
         }
@@ -113,6 +108,14 @@ Application {
             shoppingModel.setProperty(i, "checked", false)
         }
         sortList()
+    }
+
+    // Timer to delay sorting until animation completes
+    Timer {
+        id: sortDelayTimer
+        interval: 500  // Match the longest animation duration (fade)
+        repeat: false
+        onTriggered: sortList()
     }
 
     ListView {
@@ -129,13 +132,21 @@ Application {
             Rectangle {
                 id: backgroundRect
                 anchors.fill: parent
-                color: "#808080"
+                color: checked ? "#808080" : "#00000000"
                 opacity: checked ? 0.3 : 0.0
 
                 Behavior on opacity {
                     NumberAnimation {
-                        duration: 200
+                        duration: 500  // 500ms fade for state change
+                        easing.type: Easing.InOutQuad
                     }
+                }
+
+                Rectangle {
+                    id: clickFeedback
+                    anchors.fill: parent
+                    color: "#E09891"
+                    opacity: 0.0
                 }
             }
 
@@ -164,8 +175,29 @@ Application {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
+                    clickFeedbackAnimation.start()
                     shoppingModel.setProperty(index, "checked", !checked)
-                    sortList()
+                    sortDelayTimer.start()  // Delay sorting until animation completes
+                }
+            }
+
+            SequentialAnimation {
+                id: clickFeedbackAnimation
+                NumberAnimation {
+                    target: clickFeedback
+                    property: "opacity"
+                    from: 0.0
+                    to: 0.5
+                    duration: 50
+                    easing.type: Easing.InOutQuad
+                }
+                NumberAnimation {
+                    target: clickFeedback
+                    property: "opacity"
+                    from: 0.5
+                    to: 0.0
+                    duration: 50
+                    easing.type: Easing.InOutQuad
                 }
             }
 
