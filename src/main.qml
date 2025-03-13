@@ -131,7 +131,7 @@ Application {
 
             Behavior on opacity {
                 NumberAnimation {
-                    duration: 500  // 500ms fade
+                    duration: 500
                     easing.type: Easing.InOutQuad
                 }
             }
@@ -173,6 +173,7 @@ Application {
                 Label {
                     text: name
                     font.pixelSize: 28
+                    font.strikeout: checked  // Strikethrough when checked
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignLeft
                     Layout.fillWidth: true
