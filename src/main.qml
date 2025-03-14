@@ -112,7 +112,7 @@ Application {
 
     Timer {
         id: sortDelayTimer
-        interval: 500  // Match the fade animation duration
+        interval: 500
         repeat: false
         onTriggered: sortList()
     }
@@ -120,14 +120,14 @@ Application {
     ListView {
         id: listView
         anchors.fill: parent
-        anchors.topMargin: 40
+        anchors.topMargin: DeviceInfo.hasRoundScreen ? 30 : 10
         model: shoppingModel
         clip: true
 
         delegate: Item {
             width: listView.width
-            height: 72
-            opacity: checked ? 0.6 : 1.0  // Fade to 0.6 when checked, 1.0 when unchecked
+            height: 64
+            opacity: checked ? 0.7 : 1.0
 
             Behavior on opacity {
                 NumberAnimation {
@@ -139,8 +139,8 @@ Application {
             Rectangle {
                 id: backgroundRect
                 anchors.fill: parent
-                color: checked ? "#808080" : "#00000000"
-                opacity: checked ? 0.3 : 0.0
+                color: checked ? "#222222" : "#00000000"
+                opacity: checked ? 0.4 : 0.0
 
                 Behavior on opacity {
                     NumberAnimation {
@@ -148,32 +148,33 @@ Application {
                         easing.type: Easing.InOutQuad
                     }
                 }
-
-                Rectangle {
-                    id: clickFeedback
-                    anchors.fill: parent
-                    color: "#E09891"
-                    opacity: 0.0
-                }
             }
 
             RowLayout {
                 anchors.fill: parent
-                spacing: 16
+                spacing: 12
 
                 Icon {
-                    name: checked ?
-                        "ios-checkmark-circle-outline" :
-                        "ios-circle-outline"
-                    Layout.preferredWidth: 52
-                    Layout.preferredHeight: 52
-                    Layout.leftMargin: 60
+                    id: checkIcon
+                    name: checked ? "ios-checkmark-circle-outline" : "ios-circle-outline"
+                    Layout.preferredWidth: 48
+                    Layout.preferredHeight: 48
+                    Layout.leftMargin: DeviceInfo.hasRoundScreen ? 60 : 10
+
+                    Behavior on scale {
+                        NumberAnimation {
+                            duration: 250
+                            easing.type: Easing.InOutQuad
+                        }
+                    }
+                    scale: checked ? 1.0 : 0.8  // Scale up slightly when checked
                 }
 
                 Label {
                     text: name
                     font.pixelSize: 28
-                    font.strikeout: checked  // Strikethrough when checked
+                    font.strikeout: checked
+                    color: checked ? "#ACF39D" : "#ffffff"  // Green for checked, white for unchecked
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignLeft
                     Layout.fillWidth: true
@@ -183,29 +184,8 @@ Application {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    clickFeedbackAnimation.start()
                     shoppingModel.setProperty(index, "checked", !checked)
                     sortDelayTimer.start()
-                }
-            }
-
-            SequentialAnimation {
-                id: clickFeedbackAnimation
-                NumberAnimation {
-                    target: clickFeedback
-                    property: "opacity"
-                    from: 0.0
-                    to: 0.5
-                    duration: 50
-                    easing.type: Easing.InOutQuad
-                }
-                NumberAnimation {
-                    target: clickFeedback
-                    property: "opacity"
-                    from: 0.5
-                    to: 0.0
-                    duration: 50
-                    easing.type: Easing.InOutQuad
                 }
             }
 
