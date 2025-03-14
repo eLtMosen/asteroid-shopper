@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6.0)
+cmake_minimum_required(VERSION 3.20)
 
 project(asteroid-shopper
 	VERSION 1.0
@@ -15,13 +15,11 @@ include(ECMFindQmlModule)
 include(AsteroidCMakeSettings)
 include(AsteroidTranslations)
 
-add_executable(asteroid-shopper main.cpp resources.qrc)
+find_package(Qt5 COMPONENTS Core Qml Quick REQUIRED)
 
-target_link_libraries(asteroid-shopper PRIVATE
-    AsteroidApp)
+build_translations(i18n)
+generate_desktop(${CMAKE_SOURCE_DIR} ${CMAKE_PROJECT_NAME})
 
-install(TARGETS asteroid-shopper DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(FILES asteroid-shopper.desktop
-        DESTINATION /usr/share/applications/)
-install(FILES shopper.txt
-        DESTINATION /home/ceres/)
+add_subdirectory(src)
+
+feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
