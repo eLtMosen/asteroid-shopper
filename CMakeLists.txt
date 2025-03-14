@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.6.0)
 
 project(asteroid-shopper
-	VERSION 0.0.1
-	DESCRIPTION "Sample application to get started on Asteroid")
+	VERSION 1.0
+	DESCRIPTION "A simple shopping list app for AsteroidOS")
 
 find_package(ECM REQUIRED NO_MODULE)
 find_package(AsteroidApp REQUIRED)
@@ -15,31 +15,13 @@ include(ECMFindQmlModule)
 include(AsteroidCMakeSettings)
 include(AsteroidTranslations)
 
-add_subdirectory(src)
+add_executable(asteroid-shopper main.cpp resources.qrc)
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/runscript.in
-	${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}
-	@ONLY)
+target_link_libraries(asteroid-shopper PRIVATE
+    AsteroidApp)
 
-install(PROGRAMS ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}
-	DESTINATION ${CMAKE_INSTALL_BINDIR})
-
-generate_desktop(${CMAKE_SOURCE_DIR} ${CMAKE_PROJECT_NAME})
-
-feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
-
-set(CMAKE_INSTALL_SO_NO_EXE 0 CACHE INTERNAL "Install .so files with execute permission.")
-set(CPACK_GENERATOR "DEB")
-string(TOLOWER "${CMAKE_PROJECT_NAME}" lcproject_name)
-set(CPACK_DEBIAN_FILE_NAME "${lcproject_name}-${CMAKE_PROJECT_VERSION}.ipk")
-set(CPACK_STRIP_FILES TRUE)
-if ($ENV{OECORE_TARGET_ARCH} MATCHES "i686")
-    set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "qemux86")
-else()
-    set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "armv7vehf-neon")
-endif()
-if (NOT CPACK_PACKAGE_CONTACT) 
-    set(CPACK_PACKAGE_CONTACT bogus@example.org)
-    message(WARNING "No package contact specified: using ${CPACK_PACKAGE_CONTACT}")
-endif()
-include(CPack)
+install(TARGETS asteroid-shopper DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(FILES asteroid-shopper.desktop
+        DESTINATION /usr/share/applications/)
+install(FILES shopper.txt
+        DESTINATION /home/ceres/)
