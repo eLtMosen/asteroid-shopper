@@ -2,5 +2,5 @@
  * will be integrated to i18n/.ts files, translated on Weblate and then merged
  * back with the .desktop.template file into a single .desktop file. */
 
-//% "Shopping List App"
+//% "Shopper"
 qtTrId("id-app-launcher-name");
