@@ -3,5 +3,5 @@ Type=Application
 Categories=Applications;
 Exec=asteroid-shopper
 Icon=ios-list-box-outline
-X-Asteroid-Center-Color=#A4778B
-X-Asteroid-Outer-Color=#435058
+X-Asteroid-Center-Color=#119DA4
+X-Asteroid-Outer-Color=#090B0C
