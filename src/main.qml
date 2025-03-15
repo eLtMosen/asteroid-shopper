@@ -30,7 +30,7 @@ Application {
     centerColor: "#119DA4"
     outerColor: "#090B0C"
 
-    property string shopperFile: "file:///home/ceres/shopper.txt"
+    property string shopperFile: "/home/ceres/shopper.txt"
 
     ListModel {
         id: shoppingModel
