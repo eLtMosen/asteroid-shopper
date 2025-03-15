@@ -29,6 +29,8 @@ Application {
     centerColor: "#119DA4"
     outerColor: "#090B0C"
 
+    property string shopperFile: "file:///home/ceres/shopper.txt"
+
     ListModel {
         id: shoppingModel
     }
@@ -39,7 +41,7 @@ Application {
 
     function loadShoppingList() {
         var xhr = new XMLHttpRequest()
-        xhr.open("GET", "file:///home/ceres/shopper.txt")
+        xhr.open("GET", shopperFile)
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 var items = xhr.responseText.split('\n').filter(item => item.trim() !== '')
@@ -63,7 +65,7 @@ Application {
 
     function saveShoppingList() {
         var xhr = new XMLHttpRequest()
-        xhr.open("PUT", "file:///home/ceres/shopper.txt")
+        xhr.open("PUT", shopperFile)
         var data = ""
         for (var i = 0; i < shoppingModel.count; i++) {
             var item = shoppingModel.get(i)
