@@ -21,7 +21,7 @@ import QtQuick 2.9
 import QtQuick.Layouts 1.15
 import org.asteroid.utils 1.0
 import org.asteroid.controls 1.0
-import org.asteroid.filehelper 1.0  // Import for static FileHelper methods
+import org.asteroid.filehelper 1.0
 
 Application {
     id: root

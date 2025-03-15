@@ -1,4 +1,4 @@
-add_executable(${CMAKE_PROJECT_NAME} main.cpp resources.qrc)
+add_executable(${CMAKE_PROJECT_NAME} main.cpp resources.qrc FileHelper.cpp)
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
 	AsteroidApp)

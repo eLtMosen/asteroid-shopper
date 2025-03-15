@@ -16,8 +16,13 @@
  */
 
 #include <asteroidapp.h>
+#include "FileHelper.h"
 
 int main(int argc, char *argv[])
 {
+    qmlRegisterSingletonType<FileHelper>("org.asteroid.filehelper", 1, 0, "FileHelper",
+        [](QQmlEngine *, QJSEngine *) -> QObject * {
+            return FileHelper::instance();
+        });
     return AsteroidApp::main(argc, argv);
 }
