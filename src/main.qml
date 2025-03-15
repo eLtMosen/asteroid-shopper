@@ -21,6 +21,7 @@ import QtQuick 2.9
 import QtQuick.Layouts 1.15
 import org.asteroid.utils 1.0
 import org.asteroid.controls 1.0
+import org.asteroid.filehelper 1.0  // Import for static FileHelper methods
 
 Application {
     id: root
@@ -40,38 +41,32 @@ Application {
     }
 
     function loadShoppingList() {
-        var xhr = new XMLHttpRequest()
-        xhr.open("GET", shopperFile)
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                var items = xhr.responseText.split('\n').filter(item => item.trim() !== '')
-                items.forEach(function(item) {
-                    var trimmed = item.trim()
-                    if (trimmed.length > 0) {
-                        var isChecked = false
-                        var name = trimmed
-                        if (trimmed.charAt(0) === '+' || trimmed.charAt(0) === '-') {
-                            isChecked = trimmed.charAt(0) === '+'
-                            name = trimmed.substring(1).trim()
-                        }
-                        shoppingModel.append({name: name, checked: isChecked})
+        var fileContent = FileHelper.readFile(shopperFile)
+        if (fileContent !== "") {
+            var items = fileContent.split('\n').filter(item => item.trim() !== '')
+            items.forEach(function(item) {
+                var trimmed = item.trim()
+                if (trimmed.length > 0) {
+                    var isChecked = false
+                    var name = trimmed
+                    if (trimmed.charAt(0) === '+' || trimmed.charAt(0) === '-') {
+                        isChecked = trimmed.charAt(0) === '+'
+                        name = trimmed.substring(1).trim()
                     }
-                })
-                sortList()
-            }
+                    shoppingModel.append({name: name, checked: isChecked})
+                }
+            })
+            sortList()
         }
-        xhr.send()
     }
 
     function saveShoppingList() {
-        var xhr = new XMLHttpRequest()
-        xhr.open("PUT", shopperFile)
         var data = ""
         for (var i = 0; i < shoppingModel.count; i++) {
             var item = shoppingModel.get(i)
             data += (item.checked ? "+" : "-") + item.name + "\n"
         }
-        xhr.send(data)
+        FileHelper.writeFile(shopperFile, data)
     }
 
     function sortList() {
